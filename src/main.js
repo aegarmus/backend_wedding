@@ -9,8 +9,26 @@ import { dbConnect } from './services/dbConnection.js';
 
 const app = express();
 
-// Configuración de CORS
-app.use(cors());
+const allowedOrigins = [
+  "https://alan-mariel-test.netlify.app",
+  "http://localhost:3000",
+  "https://alanmariel.netlify.app",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
