@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
-import { serverInit } from './services/ServerInit.js';
 
 import guestRoutes from './routes/guestRoutes.js';
 import playlistRoutes from './routes/playlistRoutes.js';
 
 import { errorHandler } from './middlewares/errorHandlers.js';
+import { dbConnect } from './services/dbConnection.js';
 
 const app = express();
 
@@ -22,4 +22,10 @@ app.use('/api', playlistRoutes);
 
 app.use(errorHandler);
 
-serverInit(app);
+(async () =>{ 
+    await dbConnect();
+
+})()
+
+
+export default app
