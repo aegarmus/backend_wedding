@@ -1,10 +1,16 @@
-import { Sequelize } from "sequelize"
-import { config } from "./env.config.js"
+import mongoose from 'mongoose';
+import { config } from './env.config.js';
 
-const { host, user, pass, name, dialect, port } = config.db
+const { dbUrl } = config.db;
 
-export const dbConfig = new Sequelize(name, user, pass, {
-    host,
-    dialect,
-    port
-})
+export const connectDB = async () => {
+    try {
+        await mongoose.connect(dbUrl);
+        console.log('MongoDB connected');
+    } catch (error) {
+        console.error('MongoDB connection error:', error);
+        process.exit(1);
+    }
+};
+
+
